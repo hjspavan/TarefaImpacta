@@ -159,6 +159,7 @@ git merge nova-branch
 - GitHub
 - Clone, Push e Pull
 - Boas práticas com Git
+- Maneiras de digitar
 
 ## 💡 Boas Práticas
 
