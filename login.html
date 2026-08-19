@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles-login.css" />
+  </head>
+  <body>
+    <main class="login-page">
+      <section class="login-card">
+        <div class="brand">
+          <div class="brand-mark">I</div>
+          <span>Impacta</span>
+        </div>
+
+        <div class="welcome-text">
+          <h1>Bem-vindo de volta</h1>
+          <p>Entre com sua conta para continuar.</p>
+        </div>
+
+        <form id="loginForm" class="login-form" novalidate>
+          <label class="input-group">
+            <span>E-mail</span>
+            <input type="email" id="email" name="email" placeholder="seu@email.com" required />
+          </label>
+
+          <label class="input-group">
+            <span>Senha</span>
+            <input type="password" id="password" name="password" placeholder="••••••••" required />
+          </label>
+
+          <div class="options-row">
+            <label class="checkbox-wrap">
+              <input type="checkbox" name="remember" />
+              <span>Lembrar-me</span>
+            </label>
+            <a href="#">Esqueci minha senha</a>
+          </div>
+
+          <button type="submit" class="login-button">Entrar</button>
+
+          <p id="message" class="message" aria-live="polite"></p>
+        </form>
+
+        <p class="signup-text">
+          Ainda não tem conta?
+          <a href="#">Cadastre-se</a>
+        </p>
+      </section>
+    </main>
+
+    <script src="login.js"></script>
+  </body>
+</html>
