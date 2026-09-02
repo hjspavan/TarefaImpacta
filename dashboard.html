@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Impacta</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles-dashboard.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <!-- Elementos de fundo e iluminação -->
+      <div class="bg-orb orb-one" aria-hidden="true"></div>
+      <div class="bg-orb orb-two" aria-hidden="true"></div>
+      <div class="bg-orb orb-three" aria-hidden="true"></div>
+
+      <!-- Barra de Navegação Superior -->
+      <header class="top-navbar">
+        <div class="nav-container">
+          <div class="brand">
+            <div class="brand-mark">I</div>
+            <div class="brand-text">
+              <span class="brand-title">Impacta</span>
+              <span class="brand-subtitle">Portal do Aluno</span>
+            </div>
+          </div>
+
+          <nav class="nav-links">
+            <a href="#dashboard" class="nav-link active">Dashboard</a>
+            <a href="#tarefas" class="nav-link">Tarefas</a>
+            <a href="#disciplinas" class="nav-link">Disciplinas</a>
+            <a href="#avisos" class="nav-link">Avisos</a>
+          </nav>
+
+          <div class="user-controls">
+            <div class="user-profile-badge">
+              <div class="avatar" id="userAvatar">A</div>
+              <div class="user-details">
+                <span class="user-name" id="displayUserName">Aluno Impacta</span>
+                <span class="user-email" id="displayUserEmail">aluno@impacta.edu.br</span>
+              </div>
+            </div>
+            <button id="logoutBtn" class="logout-button" title="Encerrar Sessão">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
+              <span>Sair</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Conteúdo Principal -->
+      <main class="dashboard-container" id="dashboard">
+        <!-- Banner de Boas-Vindas -->
+        <section class="welcome-banner">
+          <div class="banner-content">
+            <span class="banner-tag">Ambiente Acadêmico</span>
+            <h1>Olá, <span id="welcomeUserName">Estudante</span>! 👋</h1>
+            <p>Acompanhe suas tarefas, prazos de entrega e progresso das disciplinas do semestre.</p>
+          </div>
+          <div class="banner-date">
+            <span class="date-label">Data de hoje</span>
+            <span class="current-date" id="currentDateStr">--/--/----</span>
+          </div>
+        </section>
+
+        <!-- Grade de Indicadores / Estatísticas (KPIs) -->
+        <section class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon icon-pending">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-title">Tarefas Pendentes</span>
+              <strong class="stat-value" id="statPending">0</strong>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon icon-completed">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-title">Tarefas Concluídas</span>
+              <strong class="stat-value" id="statCompleted">0</strong>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon icon-courses">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+              </svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-title">Disciplinas Ativas</span>
+              <strong class="stat-value">4</strong>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon icon-progress">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="20" x2="18" y2="10"></line>
+                <line x1="12" y1="20" x2="12" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="14"></line>
+              </svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-title">Desempenho Médio</span>
+              <strong class="stat-value">9.2</strong>
+            </div>
+          </div>
+        </section>
+
+        <!-- Seção Principal: Gerenciador de Tarefas e Coluna Lateral -->
+        <div class="main-layout-grid">
+          <!-- Coluna da Esquerda: Gestor de Tarefas -->
+          <section class="tasks-section" id="tarefas">
+            <div class="section-card">
+              <div class="section-header">
+                <div class="header-titles">
+                  <h2>Minhas Tarefas Impacta</h2>
+                  <p>Organize suas atividades e trabalhos acadêmicos</p>
+                </div>
+                <div class="filter-tabs">
+                  <button class="filter-btn active" data-filter="all">Todas (<span id="countAll">0</span>)</button>
+                  <button class="filter-btn" data-filter="pending">Pendentes (<span id="countPending">0</span>)</button>
+                  <button class="filter-btn" data-filter="completed">Concluídas (<span id="countCompleted">0</span>)</button>
+                </div>
+              </div>
+
+              <!-- Formulário de Adição de Tarefa -->
+              <form id="addTaskForm" class="task-form">
+                <div class="form-inputs-row">
+                  <input
+                    type="text"
+                    id="taskTitle"
+                    placeholder="Título da tarefa ou atividade..."
+                    required
+                  />
+                  <select id="taskCategory" required>
+                    <option value="" disabled selected>Disciplina</option>
+                    <option value="Git e GitHub">Git & GitHub</option>
+                    <option value="Desenvolvimento Web">Desenvolvimento Web</option>
+                    <option value="Banco de Dados">Banco de Dados</option>
+                    <option value="Engenharia de Software">Engenharia de Software</option>
+                    <option value="Geral">Atividade Geral</option>
+                  </select>
+                  <select id="taskPriority">
+                    <option value="alta">Prioridade Alta</option>
+                    <option value="media" selected>Prioridade Média</option>
+                    <option value="baixa">Prioridade Baixa</option>
+                  </select>
+                  <input type="date" id="taskDueDate" />
+                  <button type="submit" class="add-task-btn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <line x1="12" y1="5" x2="12" y2="19"></line>
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    <span>Adicionar</span>
+                  </button>
+                </div>
+              </form>
+
+              <!-- Lista de Tarefas -->
+              <div class="tasks-list-container">
+                <ul id="tasksList" class="tasks-list">
+                  <!-- Itens gerados dinamicamente via JavaScript -->
+                </ul>
+                <div id="emptyTasksState" class="empty-state" style="display: none;">
+                  <div class="empty-icon">📝</div>
+                  <h3>Nenhuma tarefa encontrada</h3>
+                  <p>Adicione novas tarefas acima para organizar sua rotina de estudos.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Coluna da Direita: Disciplinas e Avisos -->
+          <aside class="sidebar-section">
+            <!-- Disciplinas em Andamento -->
+            <div class="section-card disciplines-card" id="disciplinas">
+              <div class="section-header-compact">
+                <h3>Disciplinas do Semestre</h3>
+                <span class="badge">4 Cursos</span>
+              </div>
+              <div class="disciplines-list">
+                <div class="discipline-item">
+                  <div class="discipline-header">
+                    <span class="discipline-name">Git e Controle de Versão</span>
+                    <span class="discipline-progress-txt">85%</span>
+                  </div>
+                  <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: 85%;"></div>
+                  </div>
+                  <span class="discipline-info">Prof. Fernando • Próxima aula: Quinta-feira</span>
+                </div>
+
+                <div class="discipline-item">
+                  <div class="discipline-header">
+                    <span class="discipline-name">Desenvolvimento Web Fullstack</span>
+                    <span class="discipline-progress-txt">70%</span>
+                  </div>
+                  <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: 70%;"></div>
+                  </div>
+                  <span class="discipline-info">Profª. Mariana • Próxima aula: Segunda-feira</span>
+                </div>
+
+                <div class="discipline-item">
+                  <div class="discipline-header">
+                    <span class="discipline-name">Banco de Dados Relacional</span>
+                    <span class="discipline-progress-txt">90%</span>
+                  </div>
+                  <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: 90%;"></div>
+                  </div>
+                  <span class="discipline-info">Prof. Carlos • Próxima aula: Terça-feira</span>
+                </div>
+
+                <div class="discipline-item">
+                  <div class="discipline-header">
+                    <span class="discipline-name">Engenharia de Software</span>
+                    <span class="discipline-progress-txt">60%</span>
+                  </div>
+                  <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: 60%;"></div>
+                  </div>
+                  <span class="discipline-info">Profª. Beatriz • Próxima aula: Quarta-feira</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Avisos e Próximos Prazos -->
+            <div class="section-card notices-card" id="avisos">
+              <div class="section-header-compact">
+                <h3>Próximos Prazos</h3>
+                <span class="badge badge-purple">Importante</span>
+              </div>
+              <div class="deadlines-list">
+                <div class="deadline-item">
+                  <div class="deadline-date-box">
+                    <span class="deadline-day">15</span>
+                    <span class="deadline-month">SET</span>
+                  </div>
+                  <div class="deadline-details">
+                    <strong>Entrega do Projeto Git & GitHub</strong>
+                    <span>Envio via repositório remoto</span>
+                  </div>
+                </div>
+
+                <div class="deadline-item">
+                  <div class="deadline-date-box">
+                    <span class="deadline-day">22</span>
+                    <span class="deadline-month">SET</span>
+                  </div>
+                  <div class="deadline-details">
+                    <strong>Avaliação Contínua Web</strong>
+                    <span>Questionário no AVA Impacta</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </main>
+    </div>
+
+    <script src="dashboard.js"></script>
+  </body>
+</html>
+

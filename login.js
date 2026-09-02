@@ -25,8 +25,19 @@ if (form) {
       return;
     }
 
-    showMessage('Login realizado com sucesso!', 'success');
-    form.reset();
+    // Salva a sessão do usuário
+    const userName = email.split('@')[0];
+    const formattedName = userName.charAt(0).toUpperCase() + userName.slice(1);
+    localStorage.setItem('impacta_user', JSON.stringify({
+      email: email,
+      name: formattedName
+    }));
+
+    showMessage('Login realizado com sucesso! Redirecionando...', 'success');
+    
+    setTimeout(() => {
+      window.location.href = 'dashboard.html';
+    }, 800);
   });
 }
 
