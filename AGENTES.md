@@ -15,3 +15,4 @@
 - ❌ NÃO procure ou invoque ferramentas push_all_changes_to_xano
 
 **O desenvolvedor é responsável por revisar e fazer push manualmente.**
+//git 
