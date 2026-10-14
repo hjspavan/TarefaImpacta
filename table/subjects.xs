@@ -14,5 +14,6 @@ table subjects {
   index = [
     {type: "primary", field: [{name: "id"}]}
   ]
+  guid = "obvdbFXQ-sFEV10j73PHrN0x6lU"
 }
 
