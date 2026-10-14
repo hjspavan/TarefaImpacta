@@ -1,179 +1,61 @@
-# 📚 Aula de Git
+#  TarefaImpacta
 
-Este repositório foi criado para acompanhar as aulas de **Git e GitHub**, apresentando os principais comandos e conceitos utilizados no controle de versão.
+Repositório desenvolvido durante as aulas de **Git e GitHub**, com o objetivo de praticar os principais conceitos de controle de versão e gerenciamento de repositórios.
 
-## 🎯 Objetivos
+##  Objetivo
 
-- Compreender o funcionamento do Git.
-- Aprender os principais comandos do Git.
-- Criar e gerenciar repositórios locais.
-- Trabalhar com repositórios remotos no GitHub.
-- Utilizar branches para desenvolvimento.
-- Realizar merge e resolver conflitos.
-- Compartilhar código utilizando GitHub.
+Este projeto tem como finalidade colocar em prática conceitos fundamentais do Git e GitHub, incluindo:
 
-## 🛠️ Pré-requisitos
+* 🔧 Configuração do Git
+* 📁 Criação de repositórios
+* 💾 Commits e histórico de alterações
+* 🌿 Branches
+* 🔀 Merge
+* ⬆️ Push
+* ⬇️ Pull
+* 📥 Clone
+* ☁️ Integração com o GitHub
+* 🛠️ Boas práticas de versionamento
 
-Antes de começar, você precisa ter instalado:
+## 🛠️ Tecnologias
 
-- Git
-- Uma conta no GitHub
-- Um editor de código (VS Code, por exemplo)
+* **Git**
+* **GitHub**
+* **Python**
+* **HTML**
+* **JavaScript**
+* **CSS**
 
-Verifique se o Git está instalado:
-
-```bash
-git --version
-```
-
-## 🚀 Principais Comandos
-
-### Configuração inicial
-
-```bash
-git config --global user.name "Seu Nome"
-git config --global user.email "seu@email.com"
-```
-
-### Criar um repositório
-
-```bash
-git init
-```
-
-### Verificar status
-
-```bash
-git status
-```
-
-### Adicionar arquivos
-
-Adicionar um arquivo específico:
-
-```bash
-git add arquivo.txt
-```
-
-Adicionar todos os arquivos:
-
-```bash
-git add .
-```
-
-### Criar um commit
-
-```bash
-git commit -m "Mensagem do commit"
-```
-
-### Visualizar histórico
-
-```bash
-git log
-```
-
-Versão resumida:
-
-```bash
-git log --oneline
-```
-
-### Trabalhando com repositórios remotos
-
-Adicionar um repositório remoto:
-
-```bash
-git remote add origin https://github.com/usuario/repositorio.git
-```
-
-Enviar alterações:
-
-```bash
-git push -u origin main
-```
-
-Baixar alterações:
-
-```bash
-git pull
-```
-
-Clonar um repositório:
-
-```bash
-git clone https://github.com/usuario/repositorio.git
-```
-
-## 🌿 Branches
-
-Criar uma branch:
-
-```bash
-git branch nova-branch
-```
-
-Trocar de branch:
-
-```bash
-git checkout nova-branch
-```
-
-Criar e trocar ao mesmo tempo:
-
-```bash
-git checkout -b nova-branch
-```
-
-Listar branches:
-
-```bash
-git branch
-```
-
-Mesclar uma branch:
-
-```bash
-git merge nova-branch
-```
-
-## 📂 Estrutura do Repositório
+## 📂 Estrutura do Projeto
 
 ```text
-.
-├── README.md
-├── exemplos/
-├── exercicios/
-└── arquivos/
+TarefaImpacta/
+├── .github/
+├── .agent/
+├── .agents/
+├── .gemini/
+├── docs/
+├── openspec/
+├── pages/
+├── table/
+├── app.py
+├── login.html
+├── login.js
+├── styles-login.css
+├── requirements.txt
+├── todos.md
+└── README.md
 ```
+## 🎓 Finalidade
 
-## 📖 Conteúdo da Aula
+Este projeto possui finalidade **educacional** e foi desenvolvido como parte das atividades realizadas durante as aulas da **Faculdade Impacta**, servindo como prática para o aprendizado de Git e GitHub.
 
-- Introdução ao Git
-- Controle de versão
-- Repositórios locais
-- Commits
-- Histórico de versões
-- Branches
-- Merge
-- GitHub
-- Clone, Push e Pull
-- Boas práticas com Git
-- Maneiras de digitar
+## 👨‍💻 Autor
 
-## 💡 Boas Práticas
+**Henrique Jordão Silva Pavan**
 
-- Faça commits pequenos e frequentes.
-- Escreva mensagens de commit descritivas.
-- Utilize branches para novas funcionalidades.
-- Sempre sincronize o repositório antes de enviar alterações.
-- Evite enviar arquivos desnecessários.
+GitHub: [@hjspavan](https://github.com/hjspavan)
 
-## 📚 Referências
+---
 
-- Documentação oficial do Git: https://git-scm.com/docs
-- GitHub Docs: https://docs.github.com
-
-## 👨‍🏫 Autor
-
-Material desenvolvido para fins didáticos durante as aulas de Git e GitHub.
+⭐ Projeto desenvolvido para fins de estudo e aprendizado.
