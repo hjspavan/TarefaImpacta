@@ -1,4 +1,3 @@
-// Definição do esquema da tabela academic_tasks no Xano
 table academic_tasks {
   description = "Tabela de tarefas acadêmicas vinculada às disciplinas"
   auth = false
@@ -33,5 +32,5 @@ table academic_tasks {
   index = [
     {type: "primary", field: [{name: "id"}]}
   ]
+  guid = "Zbfmd22N7DYQUK0mLOOXa7BzU1w"
 }
-
