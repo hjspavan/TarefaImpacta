@@ -1,36 +1,29 @@
+// Tabela de tarefas acadêmicas vinculada às disciplinas
 table academic_tasks {
-  description = "Tabela de tarefas acadêmicas vinculada às disciplinas"
   auth = false
 
   schema {
-    int id {
-      description = "Identificador único auto-incremental"
-    }
-
-    text title {
-      description = "Título da tarefa ou obrigação acadêmica"
-    }
-
-    text description? {
-      description = "Descrição detalhada da tarefa"
-    }
-
-    timestamp due_date? {
-      description = "Data de entrega ou realização da tarefa"
-    }
-
-    text status {
-      description = "Status da tarefa (ex: pendente, em andamento, concluída)"
-    }
-
+    // Identificador único auto-incremental
+    int id
+  
+    // Título da tarefa ou obrigação acadêmica
+    text title
+  
+    // Descrição detalhada da tarefa
+    text description?
+  
+    // Data de entrega ou realização da tarefa
+    timestamp due_date?
+  
+    // Status da tarefa (ex: pendente, em andamento, concluída)
+    text status
+  
+    // Referência para a tabela subjects
     int subject_id {
       table = "subjects"
-      description = "Referência para a tabela subjects"
     }
   }
 
-  index = [
-    {type: "primary", field: [{name: "id"}]}
-  ]
+  index = [{type: "primary", field: [{name: "id"}]}]
   guid = "Zbfmd22N7DYQUK0mLOOXa7BzU1w"
 }
