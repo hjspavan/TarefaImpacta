@@ -7,13 +7,10 @@ table subjects {
     text teacher?
     int hours
     int user_id {
-      table = "user"
+      table = ""
     }
   }
 
-  index = [
-    {type: "primary", field: [{name: "id"}]}
-  ]
+  index = [{type: "primary", field: [{name: "id"}]}]
   guid = "obvdbFXQ-sFEV10j73PHrN0x6lU"
 }
-
