@@ -1,0 +1,112 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>, /F2 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >> >> >> /MediaBox [0 0 595 842] /Contents 4 0 R >>
+endobj
+4 0 obj
+<< /Length 1376 >>
+stream
+BT
+/F2 16 Tf
+50 790 Td
+(EduTrack AI - Relatorio de Desempenho Academico) Tj
+ET
+BT
+/F1 10 Tf
+50 770 Td
+(Data de Emissao: 04/11/2026 11:28) Tj
+ET
+BT
+/F1 10 Tf
+50 755 Td
+(-------------------------------------------------------------------------------------------------) Tj
+ET
+BT
+/F2 12 Tf
+50 735 Td
+(1. DADOS DO ESTUDANTE) Tj
+ET
+BT
+/F1 11 Tf
+50 718 Td
+(Nome: Aluno Teste) Tj
+ET
+BT
+/F1 11 Tf
+50 703 Td
+(E-mail: teste@email.com    |    ID Estudante: 1) Tj
+ET
+BT
+/F1 10 Tf
+50 688 Td
+(-------------------------------------------------------------------------------------------------) Tj
+ET
+BT
+/F2 12 Tf
+50 668 Td
+(2. RESUMO GERAL DE DESEMPENHO) Tj
+ET
+BT
+/F1 11 Tf
+50 650 Td
+(Total de Disciplinas Cursadas: 1) Tj
+ET
+BT
+/F1 11 Tf
+50 635 Td
+(Total de Tarefas Registradas: 2) Tj
+ET
+BT
+/F1 11 Tf
+50 620 Td
+(Tarefas Concluidas: 1    |    Tarefas Pendentes: 1) Tj
+ET
+BT
+/F2 11 Tf
+50 605 Td
+(Taxa de Conclusao Geral: 50.0%) Tj
+ET
+BT
+/F1 10 Tf
+50 590 Td
+(-------------------------------------------------------------------------------------------------) Tj
+ET
+BT
+/F2 12 Tf
+50 570 Td
+(3. DETALHAMENTO DAS DISCIPLINAS E TAREFAS) Tj
+ET
+BT
+/F2 11 Tf
+50 550 Td
+(1. Python \(40h\) - Docente: Professor Teste) Tj
+ET
+BT
+/F1 10 Tf
+65 534 Td
+(Progresso: 50.0% \(1/2 tarefas concluidas\)) Tj
+ET
+BT
+/F1 8 Tf
+50 40 Td
+(Documento gerado automaticamente pelo EduTrack AI - Sistema de Gestao Academica) Tj
+ET
+endstream
+endobj
+xref
+0 5
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000355 00000 n 
+trailer
+<< /Size 5 /Root 1 0 R >>
+startxref
+1783
+%%EOF
