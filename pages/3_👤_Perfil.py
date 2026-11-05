@@ -6,19 +6,10 @@ import streamlit as st
 st.set_page_config(page_title="Perfil - EduTrack AI", page_icon="👤")
 
 def get_auth_base_url() -> str:
-    """Carrega a URL base dos endpoints de autenticação a partir do .env."""
-    env_path = Path(__file__).resolve().parent.parent / ".env"
-    if env_path.exists():
-        try:
-            with open(env_path, "r", encoding="utf-8") as f:
-                for line in f:
-                    line = line.strip()
-                    if line and not line.startswith("#") and "=" in line:
-                        key, val = line.split("=", 1)
-                        if key.strip() in ("URL_base_AUTH", "AUTH_BASE_URL"):
-                            return val.strip().strip('"').strip("'")
-        except Exception:
-            pass
+    """Carrega a URL base dos endpoints de autenticação a partir de st.secrets ou variáveis de ambiente."""
+    for key in ("URL_base_AUTH", "AUTH_BASE_URL"):
+        if key in st.secrets:
+            return str(st.secrets[key]).strip().strip('"').strip("'").rstrip("/")
     return os.environ.get("URL_base_AUTH") or os.environ.get("AUTH_BASE_URL", "")
 
 def auth_signup(base_url: str, name: str, email: str, password: str):
@@ -43,7 +34,7 @@ def auth_me(base_url: str, token: str):
 base_url = get_auth_base_url()
 
 if not base_url:
-    st.error("A URL base de autenticação (`URL_base_AUTH`) não foi encontrada no arquivo `.env` na raiz do projeto.")
+    st.error("A URL base de autenticação (`URL_base_AUTH`) não foi configurada em `.streamlit/secrets.toml`.")
     st.stop()
 
 # Inicialização de estado da sessão
