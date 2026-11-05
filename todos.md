@@ -5,4 +5,5 @@
 - [x] Implementação de cadastro e login em `pages/3_👤_Perfil.py` consumindo os endpoints `auth/login`, `auth/signup` e `auth/me` do Xano com URL base no `.env`.
 - [x] Criação dos endpoints CRUD autenticados (`POST`, `GET`, `PATCH`, `DELETE`) para a tabela `subjects` em `api/subjects/` com isolamento por usuário (`user_id == $auth.id`).
 - [x] Criação dos endpoints CRUD autenticados (`POST`, `GET`, `PATCH`, `DELETE`) para a tabela `academic_tasks` em `api/academic_tasks/` com validação de propriedade via disciplina associada (`subjects.user_id == $auth.id`).
+- [x] Migração da leitura de variáveis de ambiente do `.env` para `st.secrets` com fallback seguro em `pages/1_📚_Disciplinas.py`, `pages/2_📝_Tarefas.py` e `pages/3_👤_Perfil.py`.
 

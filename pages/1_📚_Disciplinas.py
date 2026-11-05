@@ -11,19 +11,9 @@ st.write("Cadastro e consulta de disciplinas")
 
 
 def get_base_url():
-    """Obtém a URL base do grupo subjects no arquivo .env."""
-    env_path = Path(__file__).resolve().parent.parent / ".env"
-
-    if env_path.exists():
-        with open(env_path, "r", encoding="utf-8") as arquivo:
-            for linha in arquivo:
-                linha = linha.strip()
-
-                if linha and not linha.startswith("#") and "=" in linha:
-                    chave, valor = linha.split("=", 1)
-
-                    if chave.strip() == "URL_base_SUBJECTS":
-                        return valor.strip().strip('"').strip("'").rstrip("/")
+    """Obtém a URL base do grupo subjects a partir de st.secrets ou variáveis de ambiente."""
+    if "URL_base_SUBJECTS" in st.secrets:
+        return str(st.secrets["URL_base_SUBJECTS"]).strip().strip('"').strip("'").rstrip("/")
 
     return os.environ.get("URL_base_SUBJECTS", "").rstrip("/")
 
@@ -41,7 +31,7 @@ base_url = get_base_url()
 headers = get_headers()
 
 if not base_url:
-    st.error("A URL base de Disciplinas não foi encontrada no arquivo .env.")
+    st.error("A URL base de Disciplinas (`URL_base_SUBJECTS`) não foi configurada em `.streamlit/secrets.toml`.")
     st.stop()
 
 if not headers:
