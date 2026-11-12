@@ -10,20 +10,10 @@ st.title("📝 Tarefas")
 st.write("Cadastro e consulta de tarefas acadêmicas")
 
 
-def get_env_url(nome_variavel):
-    """Lê uma variável de URL do arquivo .env."""
-    env_path = Path(__file__).resolve().parent.parent / ".env"
-
-    if env_path.exists():
-        with open(env_path, "r", encoding="utf-8") as arquivo:
-            for linha in arquivo:
-                linha = linha.strip()
-
-                if linha and not linha.startswith("#") and "=" in linha:
-                    chave, valor = linha.split("=", 1)
-
-                    if chave.strip() == nome_variavel:
-                        return valor.strip().strip('"').strip("'").rstrip("/")
+def get_config_url(nome_variavel):
+    """Obtém a URL base de um serviço a partir de st.secrets ou variáveis de ambiente."""
+    if nome_variavel in st.secrets:
+        return str(st.secrets[nome_variavel]).strip().strip('"').strip("'").rstrip("/")
 
     return os.environ.get(nome_variavel, "").rstrip("/")
 
@@ -37,14 +27,14 @@ def get_headers():
     return {"Authorization": f"Bearer {token}"}
 
 
-base_subjects = get_env_url("URL_base_SUBJECTS")
-base_tasks = get_env_url("URL_base_ACADEMIC_TASKS")
+base_subjects = get_config_url("URL_base_SUBJECTS")
+base_tasks = get_config_url("URL_base_ACADEMIC_TASKS")
 headers = get_headers()
 
 if not base_subjects or not base_tasks:
     st.error(
         "Configure URL_base_SUBJECTS e URL_base_ACADEMIC_TASKS "
-        "no arquivo .env."
+        "no arquivo .streamlit/secrets.toml."
     )
     st.stop()
 
