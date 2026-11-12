@@ -16,19 +16,32 @@ import requests
 
 
 def get_env_url(variable_name):
-    """Lê uma variável de URL do arquivo .env na raiz do projeto."""
+    """Lê uma variável de URL a partir de secrets.toml, .env ou os.environ."""
+    secrets_path = Path(__file__).resolve().parent.parent / ".streamlit" / "secrets.toml"
+    if secrets_path.exists():
+        try:
+            with open(secrets_path, "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if line and not line.startswith("#") and "=" in line:
+                        k, v = line.split("=", 1)
+                        if k.strip() == variable_name:
+                            return v.strip().strip('"').strip("'").rstrip("/")
+        except Exception:
+            pass
+
     env_path = Path(__file__).resolve().parent.parent / ".env"
-
     if env_path.exists():
-        with open(env_path, "r", encoding="utf-8") as file:
-            for line in file:
-                line = line.strip()
-
-                if line and not line.startswith("#") and "=" in line:
-                    key, value = line.split("=", 1)
-
-                    if key.strip() == variable_name:
-                        return value.strip().strip('"').strip("'").rstrip("/")
+        try:
+            with open(env_path, "r", encoding="utf-8") as file:
+                for line in file:
+                    line = line.strip()
+                    if line and not line.startswith("#") and "=" in line:
+                        key, value = line.split("=", 1)
+                        if key.strip() == variable_name:
+                            return value.strip().strip('"').strip("'").rstrip("/")
+        except Exception:
+            pass
 
     return os.environ.get(variable_name, "").rstrip("/")
 
@@ -90,7 +103,7 @@ class SimplePdfBuilder:
         objects.append(
             b"3 0 obj\n<< /Type /Page /Parent 2 0 R "
             b"/Resources << /Font << "
-            b"/F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>, "
+            b"/F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> "
             b"/F2 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >> "
             b">> >> /MediaBox [0 0 595 842] /Contents 4 0 R >>\nendobj"
         )
