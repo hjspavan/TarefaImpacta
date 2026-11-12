@@ -1,164 +1,316 @@
 import os
-from pathlib import Path
 import requests
 import streamlit as st
 
-st.set_page_config(page_title="Perfil - EduTrack AI", page_icon="👤")
 
-def get_auth_base_url() -> str:
-    """Carrega a URL base dos endpoints de autenticação a partir de st.secrets ou variáveis de ambiente."""
-    for key in ("URL_base_AUTH", "AUTH_BASE_URL"):
-        if key in st.secrets:
-            return str(st.secrets[key]).strip().strip('"').strip("'").rstrip("/")
-    return os.environ.get("URL_base_AUTH") or os.environ.get("AUTH_BASE_URL", "")
+# ==============================
+# CONFIGURAÇÃO DA PÁGINA
+# ==============================
 
-def auth_signup(base_url: str, name: str, email: str, password: str):
-    """Envia requisição para cadastro de novo usuário no endpoint auth/signup."""
-    url = f"{base_url.rstrip('/')}/auth/signup"
-    payload = {"name": name, "email": email, "password": password}
-    return requests.post(url, json=payload, timeout=10)
+st.set_page_config(
+    page_title="Perfil - EduTrack AI",
+    page_icon="👤"
+)
 
-def auth_login(base_url: str, email: str, password: str):
-    """Envia requisição para autenticação de usuário no endpoint auth/login."""
-    url = f"{base_url.rstrip('/')}/auth/login"
-    payload = {"email": email, "password": password}
-    return requests.post(url, json=payload, timeout=10)
 
-def auth_me(base_url: str, token: str):
-    """Consulta dados do perfil do usuário autenticado no endpoint auth/me."""
-    url = f"{base_url.rstrip('/')}/auth/me"
-    headers = {"Authorization": f"Bearer {token}"}
-    return requests.get(url, headers=headers, timeout=10)
+# ==============================
+# CONFIGURAÇÃO DA API
+# ==============================
 
-# Inicialização da URL base
+def get_auth_base_url():
+    """Obtém a URL base da API de autenticação."""
+
+    try:
+        return (
+            st.secrets.get("URL_base_AUTH")
+            or st.secrets.get("AUTH_BASE_URL")
+            or os.getenv("URL_base_AUTH")
+            or os.getenv("AUTH_BASE_URL")
+        )
+    except Exception:
+        return (
+            os.getenv("URL_base_AUTH")
+            or os.getenv("AUTH_BASE_URL")
+        )
+
+
+def auth_signup(base_url, name, email, password):
+    """Realiza o cadastro de um novo usuário."""
+
+    return requests.post(
+        f"{base_url.rstrip('/')}/auth/signup",
+        json={
+            "name": name,
+            "email": email,
+            "password": password
+        },
+        timeout=30
+    )
+
+
+def auth_login(base_url, email, password):
+    """Realiza a autenticação do usuário."""
+
+    return requests.post(
+        f"{base_url.rstrip('/')}/auth/login",
+        json={
+            "email": email,
+            "password": password
+        },
+        timeout=30
+    )
+
+
+def auth_me(base_url, token):
+    """Consulta os dados do usuário autenticado."""
+
+    return requests.get(
+        f"{base_url.rstrip('/')}/auth/me",
+        headers={
+            "Authorization": f"Bearer {token}"
+        },
+        timeout=30
+    )
+
+
+# ==============================
+# INFORMAÇÕES DA PÁGINA
+# ==============================
+
+st.title("👤 Meu Perfil")
+
 base_url = get_auth_base_url()
 
 if not base_url:
-    st.error("A URL base de autenticação (`URL_base_AUTH`) não foi configurada em `.streamlit/secrets.toml`.")
+    st.error(
+        "URL da API de autenticação não encontrada. "
+        "Verifique a configuração URL_base_AUTH."
+    )
     st.stop()
 
-# Inicialização de estado da sessão
-if "auth_token" not in st.session_state:
-    st.session_state["auth_token"] = None
-if "user_data" not in st.session_state:
-    st.session_state["user_data"] = None
 
-# Fluxo de Usuário Logado
-if st.session_state["auth_token"]:
-    st.title("👤 Meu Perfil")
+# ==============================
+# USUÁRIO AUTENTICADO
+# ==============================
 
-    # Atualiza ou recupera os dados do usuário autenticado se necessário
-    if not st.session_state["user_data"]:
-        with st.spinner("Carregando perfil..."):
+auth_token = st.session_state.get("auth_token")
+
+if auth_token:
+
+    try:
+        resposta = auth_me(base_url, auth_token)
+
+        if resposta.status_code == 200:
+
+            user_data = resposta.json()
+            st.session_state["user_data"] = user_data
+
+            st.success("Você está conectado!")
+
+            st.subheader("Informações da conta")
+
+            st.write(
+                "**Nome:**",
+                user_data.get("name", "Não informado")
+            )
+
+            st.write(
+                "**E-mail:**",
+                user_data.get("email", "Não informado")
+            )
+
+            st.write(
+                "**ID:**",
+                user_data.get("id", "Não informado")
+            )
+
+            st.divider()
+
+            if st.button("🚪 Sair da conta"):
+
+                st.session_state.pop("auth_token", None)
+                st.session_state.pop("user_data", None)
+                st.session_state.pop("pdf_report_path", None)
+                st.session_state.pop("pdf_report_bytes", None)
+
+                st.rerun()
+
+            st.stop()
+
+        else:
+
+            st.warning(
+                "Sua sessão expirou. Faça login novamente."
+            )
+
+            st.session_state.pop("auth_token", None)
+            st.session_state.pop("user_data", None)
+
+    except requests.RequestException as erro:
+
+        st.error(f"Erro ao consultar perfil: {erro}")
+        st.stop()
+
+
+# ==============================
+# LOGIN E CADASTRO
+# ==============================
+
+aba_login, aba_cadastro = st.tabs(
+    ["Entrar", "Criar conta"]
+)
+
+
+# ==============================
+# LOGIN
+# ==============================
+
+with aba_login:
+
+    st.subheader("Entrar na conta")
+
+    login_email = st.text_input(
+        "E-mail",
+        key="login_email"
+    ).strip().lower()
+
+    login_password = st.text_input(
+        "Senha",
+        type="password",
+        key="login_password"
+    )
+
+    if st.button("Entrar", key="btn_login"):
+
+        if not login_email or not login_password:
+
+            st.warning("Preencha o e-mail e a senha.")
+
+        else:
+
             try:
-                res = auth_me(base_url, st.session_state["auth_token"])
-                if res.status_code == 200:
-                    st.session_state["user_data"] = res.json()
-                elif res.status_code in (401, 403):
-                    st.warning("Sessão expirada. Faça login novamente.")
-                    st.session_state["auth_token"] = None
-                    st.session_state["user_data"] = None
-                    st.rerun()
+
+                resposta = auth_login(
+                    base_url,
+                    login_email,
+                    login_password
+                )
+
+                if resposta.status_code == 200:
+
+                    dados = resposta.json()
+                    token = dados.get("authToken")
+
+                    if token:
+
+                        st.session_state["auth_token"] = token
+
+                        st.success("Login realizado com sucesso!")
+
+                        st.rerun()
+
+                    else:
+
+                        st.error(
+                            "A API não retornou o token de autenticação."
+                        )
+
                 else:
-                    st.error("Não foi possível carregar os dados do perfil.")
-            except Exception as e:
-                st.error(f"Erro ao conectar com o serviço de autenticação: {e}")
 
-    user = st.session_state.get("user_data") or {}
+                    st.error(
+                        f"Erro no login: {resposta.text}"
+                    )
 
-    if user:
-        st.subheader(f"Olá, {user.get('name', 'Estudante')}! 👋")
-        
-        col1, col2 = st.columns(2)
-        with col1:
-            st.text_input("Nome", value=str(user.get("name", "")), disabled=True)
-            st.text_input("Identificador (ID)", value=str(user.get("id", "")), disabled=True)
-        with col2:
-            st.text_input("E-mail", value=str(user.get("email", "")), disabled=True)
-            created_at = user.get("created_at")
-            if created_at:
-                st.text_input("Conta criada em", value=str(created_at), disabled=True)
+            except requests.RequestException as erro:
 
-    st.divider()
+                st.error(
+                    f"Erro ao conectar com a API: {erro}"
+                )
 
-    if st.button("🚪 Sair da Conta (Logout)", type="secondary"):
-        st.session_state["auth_token"] = None
-        st.session_state["user_data"] = None
-        st.success("Você saiu da sua conta.")
-        st.rerun()
 
-# Fluxo de Usuário Não Logado (Login / Cadastro)
-else:
-    st.title("👤 Acesso à Plataforma")
-    st.write("Faça login com sua conta ou cadastre-se para acessar suas disciplinas e tarefas.")
+# ==============================
+# CADASTRO
+# ==============================
 
-    tab_login, tab_signup = st.tabs(["🔑 Entrar (Login)", "📝 Cadastrar (Signup)"])
+with aba_cadastro:
 
-    # Aba de Login
-    with tab_login:
-        st.subheader("Login de Usuário")
-        with st.form("form_login"):
-            login_email = st.text_input("E-mail", key="login_email").strip()
-            login_password = st.text_input("Senha", type="password", key="login_password").strip()
-            submit_login = st.form_submit_button("Entrar")
+    st.subheader("Criar uma conta")
 
-            if submit_login:
-                if not login_email or not login_password:
-                    st.warning("Por favor, preencha o e-mail e a senha.")
+    signup_name = st.text_input(
+        "Nome completo",
+        key="signup_name"
+    ).strip()
+
+    signup_email = st.text_input(
+        "E-mail",
+        key="signup_email"
+    ).strip().lower()
+
+    signup_password = st.text_input(
+        "Senha",
+        type="password",
+        key="signup_password"
+    )
+
+    signup_password_confirm = st.text_input(
+        "Confirmar senha",
+        type="password",
+        key="signup_password_confirm"
+    )
+
+    if st.button("Cadastrar", key="btn_cadastro"):
+
+        if not signup_name or not signup_email or not signup_password:
+
+            st.warning("Preencha todos os campos.")
+
+        elif "@" not in signup_email or "." not in signup_email.split("@")[-1]:
+
+            st.warning("Digite um endereço de e-mail válido.")
+
+        elif signup_password != signup_password_confirm:
+
+            st.warning("As senhas não coincidem.")
+
+        else:
+
+            try:
+
+                resposta = auth_signup(
+                    base_url,
+                    signup_name,
+                    signup_email,
+                    signup_password
+                )
+
+                if resposta.status_code in (200, 201):
+
+                    dados = resposta.json()
+                    token = dados.get("authToken")
+
+                    if token:
+
+                        st.session_state["auth_token"] = token
+
+                        st.success("Cadastro realizado com sucesso!")
+
+                        st.rerun()
+
+                    else:
+
+                        st.success(
+                            "Conta criada com sucesso! "
+                            "Agora você pode entrar na sua conta."
+                        )
+
                 else:
-                    with st.spinner("Autenticando..."):
-                        try:
-                            response = auth_login(base_url, login_email, login_password)
-                            if response.status_code == 200:
-                                data = response.json()
-                                token = data.get("authToken")
-                                if token:
-                                    st.session_state["auth_token"] = token
-                                    # Consulta os dados do perfil em auth/me
-                                    me_res = auth_me(base_url, token)
-                                    if me_res.status_code == 200:
-                                        st.session_state["user_data"] = me_res.json()
-                                    st.success("Login realizado com sucesso!")
-                                    st.rerun()
-                                else:
-                                    st.error("Token de autenticação não retornado pelo servidor.")
-                            else:
-                                err_msg = response.json().get("message", "Credenciais inválidas. Verifique seu e-mail e senha.")
-                                st.error(f"Erro no login: {err_msg}")
-                        except Exception as e:
-                            st.error(f"Erro de conexão com o backend: {e}")
 
-    # Aba de Cadastro
-    with tab_signup:
-        st.subheader("Criar Nova Conta")
-        with st.form("form_signup"):
-            signup_name = st.text_input("Nome Completo", key="signup_name").strip()
-            signup_email = st.text_input("E-mail", key="signup_email").strip()
-            signup_password = st.text_input("Senha", type="password", key="signup_password").strip()
-            submit_signup = st.form_submit_button("Criar Conta")
+                    st.error(
+                        f"Erro no cadastro: {resposta.text}"
+                    )
 
-            if submit_signup:
-                if not signup_name or not signup_email or not signup_password:
-                    st.warning("Por favor, preencha todos os campos obrigatórios.")
-                else:
-                    with st.spinner("Cadastrando..."):
-                        try:
-                            response = auth_signup(base_url, signup_name, signup_email, signup_password)
-                            if response.status_code == 200:
-                                data = response.json()
-                                token = data.get("authToken")
-                                if token:
-                                    st.session_state["auth_token"] = token
-                                    # Consulta os dados do perfil em auth/me
-                                    me_res = auth_me(base_url, token)
-                                    if me_res.status_code == 200:
-                                        st.session_state["user_data"] = me_res.json()
-                                    st.success("Cadastro realizado com sucesso!")
-                                    st.rerun()
-                                else:
-                                    st.success("Conta criada com sucesso! Faça login na aba ao lado.")
-                            else:
-                                err_msg = response.json().get("message", "Não foi possível concluir o cadastro.")
-                                st.error(f"Erro no cadastro: {err_msg}")
-                        except Exception as e:
-                            st.error(f"Erro de conexão com o backend: {e}")
+            except requests.RequestException as erro:
+
+                st.error(
+                    f"Erro ao conectar com a API: {erro}"
+                )
