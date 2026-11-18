@@ -23,11 +23,17 @@ query "reports/performance" verb=GET {
       return = {type: "list"}
     } as $subjects
 
+    db.query academic_tasks {
+      where = $db.academic_tasks.subject_id in ($subjects|pluck:"id")
+      return = {type: "list"}
+    } as $all_tasks
+
     var $report_data {
       value = {
         generated_at : "now"
         student      : $user
         subjects     : $subjects
+        tasks        : $all_tasks
       }
     }
   }
@@ -35,4 +41,3 @@ query "reports/performance" verb=GET {
   response = $report_data
   guid = "reports_performance_GET_001"
 }
-
