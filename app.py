@@ -1,211 +1,215 @@
 
 import streamlit as st
 
+from components.theme import (
+    init_theme,
+    apply_theme,
+    render_theme_toggle,
+)
+
 # --------------------------------------------------
-# CONFIGURAÇÃO DA PÁGINA
+# CONFIGURAÇÃO
 # --------------------------------------------------
 
 st.set_page_config(
     page_title="EduTrack AI",
     page_icon="🎓",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded",
 )
 
 # --------------------------------------------------
-# ESTILIZAÇÃO
+# TEMA
 # --------------------------------------------------
 
-st.markdown("""
-<style>
-    .stApp {
-        background-color: #F8FAFC;
-    }
+init_theme()
+apply_theme()
 
-    .block-container {
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-    }
+# --------------------------------------------------
+# IDENTIDADE VISUAL
+# --------------------------------------------------
 
-    .welcome-card {
-        background: linear-gradient(120deg, #14213D, #2563EB);
-        padding: 35px;
-        border-radius: 18px;
-        color: white;
-        margin-bottom: 25px;
-    }
+with st.sidebar:
+    st.markdown(
+        """
+        <div style="padding: 12px 0 22px 0;">
+            <div style="font-size: 28px; font-weight: 800;">
+                🎓 EduTrack <span style="color: #6366F1;">AI</span>
+            </div>
+            <div style="font-size: 12px; opacity: 0.7;">
+                Seu desempenho acadêmico em um só lugar
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
-    .welcome-card h1 {
-        color: white;
-        font-size: 30px;
-        margin-bottom: 10px;
-    }
+    render_theme_toggle()
 
-    .welcome-card p {
-        color: #E2E8F0;
-        font-size: 16px;
-        margin-bottom: 0;
-    }
+    st.divider()
 
-    div[data-testid="stMetric"] {
-        background-color: white;
-        border: 1px solid #E2E8F0;
-        padding: 22px;
-        border-radius: 15px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    }
-
-    div[data-testid="stMetricLabel"] {
-        color: #64748B;
-    }
-
-    div[data-testid="stMetricValue"] {
-        color: #14213D;
-        font-weight: bold;
-    }
-
-    h1, h2, h3 {
-        color: #14213D;
-    }
-
-    div[role="radiogroup"] {
-        gap: 8px;
-    }
-
-    div[role="radiogroup"] label {
-        background-color: white;
-        border: 1px solid #E2E8F0;
-        border-radius: 10px;
-        padding: 10px 12px;
-    }
-
-    div[role="radiogroup"] label:hover {
-        border-color: #2563EB;
-    }
-
-    div[data-testid="stAlert"] {
-        border-radius: 12px;
-    }
-</style>
-""", unsafe_allow_html=True)
+    st.caption("PLATAFORMA ACADÊMICA")
+    st.caption("Organize. Acompanhe. Evolua.")
 
 # --------------------------------------------------
 # CABEÇALHO
 # --------------------------------------------------
 
-st.markdown("""
-<h2 style="color:#14213D; margin-bottom:0;">
-    🎓 EduTrack AI
-</h2>
-<p style="color:#64748B; margin-top:4px;">
-    Seu assistente acadêmico
-</p>
-""", unsafe_allow_html=True)
-
-st.divider()
+st.markdown(
+    """
+    <div style="
+        padding: 28px;
+        border-radius: 18px;
+        background: linear-gradient(120deg, #4338CA, #6366F1, #818CF8);
+        color: white;
+        margin-bottom: 24px;
+    ">
+        <div style="font-size: 13px; opacity: 0.85;">
+            BEM-VINDO AO SEU ESPAÇO ACADÊMICO
+        </div>
+        <div style="font-size: 32px; font-weight: 800; margin-top: 8px;">
+            EduTrack AI
+        </div>
+        <div style="font-size: 15px; opacity: 0.9; margin-top: 8px;">
+            Acompanhe suas disciplinas, organize suas tarefas
+            e evolua nos seus estudos.
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
 # --------------------------------------------------
 # NAVEGAÇÃO
 # --------------------------------------------------
 
-menu_option = st.radio(
-    "Navegação",
-    [
-        "🏠 Dashboard",
-        "📚 Disciplinas",
-        "📝 Tarefas",
-        "👤 Perfil",
-        "📄 Relatórios",
-        "🤖 Assistente IA"
-    ],
+st.markdown("### Navegação")
+
+paginas = {
+    "🏠 Dashboard": None,
+    "📚 Disciplinas": "pages/1_📚_Disciplinas.py",
+    "📝 Tarefas": "pages/2_📝_Tarefas.py",
+    "👤 Perfil": "pages/3_👤_Perfil.py",
+    "📄 Relatórios": "pages/4_📄_Relatórios.py",
+    "🤖 Assistente IA": "pages/5_🤖_Assistente.py",
+}
+
+pagina_atual = st.radio(
+    "Escolha uma página",
+    list(paginas.keys()),
     horizontal=True,
-    label_visibility="collapsed"
+    label_visibility="collapsed",
+    key="main_navigation",
 )
 
-st.write("")
+destino = paginas[pagina_atual]
 
-# --------------------------------------------------
-# REDIRECIONAMENTO DAS PÁGINAS
-# --------------------------------------------------
-
-if menu_option == "📚 Disciplinas":
-    st.switch_page("pages/1_📚_Disciplinas.py")
-
-elif menu_option == "📝 Tarefas":
-    st.switch_page("pages/2_📝_Tarefas.py")
-
-elif menu_option == "👤 Perfil":
-    st.switch_page("pages/3_👤_Perfil.py")
-
-elif menu_option == "📄 Relatórios":
-    st.switch_page("pages/4_📄_Relatórios.py")
-
-elif menu_option == "🤖 Assistente IA":
-    st.switch_page("pages/5_🤖_Assistente.py")
+if destino is not None:
+    st.switch_page(destino)
 
 # --------------------------------------------------
 # DASHBOARD
 # --------------------------------------------------
 
-else:
+st.markdown("## Visão geral")
+st.markdown(
+    "Tenha acesso rápido às principais áreas da sua vida acadêmica."
+)
 
-    st.markdown("""
-        <div class="welcome-card">
-            <h1>Olá! Seja bem-vindo ao EduTrack AI 👋</h1>
-            <p>
-                Organize seus estudos, acompanhe suas tarefas
-                e alcance seus objetivos acadêmicos.
-            </p>
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.markdown(
+        """
+        <div style="
+            padding: 22px;
+            border-radius: 15px;
+            border: 1px solid rgba(128,128,128,0.25);
+            min-height: 150px;
+        ">
+            <div style="font-size: 28px;">📚</div>
+            <div style="font-size: 18px; font-weight: 700;">
+                Disciplinas
+            </div>
+            <div style="opacity: 0.7; font-size: 13px;">
+                Gerencie suas matérias e acompanhe seus estudos.
+            </div>
         </div>
-    """, unsafe_allow_html=True)
+        """,
+        unsafe_allow_html=True,
+    )
+    if st.button("Acessar disciplinas", use_container_width=True):
+        st.switch_page(paginas["📚 Disciplinas"])
 
-    st.subheader("Visão geral")
+with col2:
+    st.markdown(
+        """
+        <div style="
+            padding: 22px;
+            border-radius: 15px;
+            border: 1px solid rgba(128,128,128,0.25);
+            min-height: 150px;
+        ">
+            <div style="font-size: 28px;">📝</div>
+            <div style="font-size: 18px; font-weight: 700;">
+                Tarefas
+            </div>
+            <div style="opacity: 0.7; font-size: 13px;">
+                Organize atividades e acompanhe os prazos.
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    if st.button("Acessar tarefas", use_container_width=True):
+        st.switch_page(paginas["📝 Tarefas"])
 
-    col1, col2 = st.columns(2)
+with col3:
+    st.markdown(
+        """
+        <div style="
+            padding: 22px;
+            border-radius: 15px;
+            border: 1px solid rgba(128,128,128,0.25);
+            min-height: 150px;
+        ">
+            <div style="font-size: 28px;">📄</div>
+            <div style="font-size: 18px; font-weight: 700;">
+                Relatórios
+            </div>
+            <div style="opacity: 0.7; font-size: 13px;">
+                Consulte seu desempenho e gere relatórios.
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    if st.button("Acessar relatórios", use_container_width=True):
+        st.switch_page(paginas["📄 Relatórios"])
 
-    with col1:
-        st.metric("📚 Disciplinas Ativas", "—")
+st.divider()
 
-    with col2:
-        st.metric("📝 Tarefas Pendentes", "—")
+st.markdown("### Inteligência artificial")
 
-    st.write("")
-    st.divider()
+col_ai, col_profile = st.columns(2)
 
-    st.subheader("🚀 Organize sua rotina acadêmica")
+with col_ai:
+    st.info(
+        "🤖 **Assistente IA**\n\n"
+        "Converse com seu assistente acadêmico e obtenha "
+        "orientações sobre suas disciplinas e tarefas."
+    )
+    if st.button("Conversar com Assistente IA", use_container_width=True):
+        st.switch_page(paginas["🤖 Assistente IA"])
 
-    col1, col2 = st.columns(2)
+with col_profile:
+    st.info(
+        "👤 **Seu perfil**\n\n"
+        "Acesse sua conta, consulte seus dados e gerencie sua sessão."
+    )
+    if st.button("Acessar meu perfil", use_container_width=True):
+        st.switch_page(paginas["👤 Perfil"])
 
-    with col1:
-        st.markdown("### 📚 Minhas disciplinas")
-        st.write(
-            "Cadastre suas disciplinas, professores "
-            "e informações acadêmicas."
-        )
-        st.info("Acesse Disciplinas para cadastrar suas matérias.")
+st.divider()
 
-    with col2:
-        st.markdown("### 📝 Minhas tarefas")
-        st.write(
-            "Cadastre atividades, acompanhe prazos "
-            "e controle seu progresso."
-        )
-        st.info("Acesse Tarefas para cadastrar suas atividades.")
-
-    st.divider()
-
-    st.subheader("🎯 Outras funcionalidades")
-
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        st.markdown("### 👤 Perfil")
-        st.write("Crie sua conta ou faça login.")
-
-    with col2:
-        st.markdown("### 📄 Relatórios")
-        st.write("Gere relatórios acadêmicos em PDF.")
-
-    with col3:
-        st.markdown("### 🤖 Assistente IA")
-        st.write("Receba ajuda para organizar seus estudos.")
+st.caption("EduTrack AI • Organização acadêmica inteligente")
